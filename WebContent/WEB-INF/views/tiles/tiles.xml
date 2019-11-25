@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions> 
+<!-- base-definition -->
+	<definition name="base" template="/WEB-INF/views/tiles/layouts/defaultLayout.jsp">
+		<put-attribute name="menu" value="/WEB-INF/views/tiles/layouts/defaultMenu.jsp" />
+		<put-attribute name="content" value="" />
+	</definition> 
+	<!-- Home Page -->
+	
+	<definition name="*.page" extends="base">
+        <put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.page" extends="base">
+         <put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.page" extends="base">
+        <put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+ 	
+ 	<definition name="empty" template="/WEB-INF/views/tiles/layouts/defaultEmpty.jsp">
+		<put-attribute name="content" value="" />
+	</definition> 
+	
+	<definition name="*.empty" extends="empty">
+        <put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.empty" extends="empty">
+         <put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.empty" extends="empty">
+        <put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+</tiles-definitions>

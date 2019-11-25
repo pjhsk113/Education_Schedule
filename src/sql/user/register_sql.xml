@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="register">
+    
+   <resultMap type="com.spring.board.vo.RegisterVo" id="RegisterMap">
+      <result property="registerIdx"         column="REGISTER_IDX"/>
+      <result property="scheduleNo"         column="SCHEDULE_NO"/>
+      <result property="registerName"         column="REGISTER_NAME"/>
+      <result property="registerPhone"      column="REGISTER_PHONE"/>
+      <result property="registerEmail"      column="REGISTER_EMAIL"/>
+      <result property="registerCompany"      column="REGISTER_COMPANY"/>
+      <result property="registerDepartment"   column="REGISTER_DEPARTMENT"/>
+      <result property="registerRank"         column="REGISTER_RANK"/>
+      <result property="registerReason"      column="REGISTER_REASON"/>
+      <result property="registerQuestions"   column="REGISTER_QUESTIONS"/>
+   </resultMap>
+	
+   <insert id="userInfoInsert" parameterType="com.spring.board.vo.RegisterVo">
+   		INSERT INTO
+   		REGISTER_INFO
+   		(
+   			REGISTER_IDX,
+   			SCHEDULE_NO,
+   			REGISTER_NAME,
+   			REGISTER_PHONE,
+   			REGISTER_EMAIL,
+   			REGISTER_COMPANY,
+   			REGISTER_DEPARTMENT,
+   			REGISTER_RANK,
+   			REGISTER_REASON,
+   			REGISTER_QUESTIONS
+   		)
+   		VALUES
+   		((SELECT IFNULL(MAX(REGISTER_IDX)+1,1) 
+   			FROM REGISTER_INFO AS TMP)
+   		,#{scheduleNo}
+   		,#{registerName}
+   		,#{registerPhone}
+   		,#{registerEmail}
+   		,#{registerCompany}
+   		,#{registerDepartment}
+   		,#{registerRank}
+   		,#{registerReason}
+   		,#{registerQuestions}
+   		)
+   </insert>
+   
+    <update id="updateApplyRegister" parameterType="com.spring.board.vo.RegisterVo">
+   		UPDATE REGISTER_INFO
+    	SET
+   			REGISTER_NAME =#{registerName},
+   			REGISTER_PHONE =#{registerPhone},
+   			REGISTER_EMAIL =#{registerEmail},
+   			REGISTER_COMPANY =#{registerCompany},
+   			REGISTER_DEPARTMENT =#{registerDepartment},
+   			REGISTER_RANK =#{registerRank},
+   			REGISTER_REASON =#{registerReason},
+   			REGISTER_QUESTIONS=#{registerQuestions}
+       	WHERE REGISTER_IDX = #{registerIdx}
+   </update>
+   
+   <delete id="deleteApply" parameterType="com.spring.board.vo.RegisterVo">
+   		DELETE 
+   		FROM REGISTER_INFO
+   		WHERE REGISTER_IDX = #{registerIdx}
+   </delete>
+</mapper>

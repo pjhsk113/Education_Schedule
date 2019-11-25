@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+    
+    <resultMap type="com.spring.board.vo.BoardVo" id="boardVo">
+       <result property="boardNo"       column="BOARD_NO"/>
+       <result property="boardTitle"    column="BOARD_TITLE"/>
+       <result property="boardComment" column="BOARD_COMMENT"/>
+       <result property="creator"       column="CREATOR"/>
+       <result property="createTime"    column="CREATE_TIME"/>       
+       <result property="hits"         column="HITS"/>
+       <result property="boardTop"      column="BOARD_TOP"/>
+    </resultMap>
+  
+    <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
+     SELECT 
+           *
+        FROM
+        (
+          SELECT 
+        @rownum := @rownum+1 AS rownum
+        ,a.*
+      FROM 
+      (
+        SELECT
+               *
+         FROM
+            BOARD
+         
+   <trim prefix="WHERE" prefixOverrides="AND|OR">
+   
+      <if test="searchAO=='and' and searchKw != null and searchKw !=''">
+         <foreach collection="searchKw" item="searchKw" open="(" close=")" separator="and">
+            <if test="searchType=='title'">
+               BOARD_TITLE like CONCAT('%', #{searchKw}, '%')
+            </if>
+            <if test="searchType=='content'">
+               BOARD_COMMENT like CONCAT('%', #{searchKw}, '%')
+            </if>
+         </foreach>   
+      </if>
+      
+      <if test="searchAO=='or' and searchKw != null and searchKw !=''">
+         <foreach collection="searchKw" item="searchKw" open="(" close=")" separator="or">
+            <if test="searchType=='title'">
+               BOARD_TITLE like CONCAT('%', #{searchKw}, '%')
+            </if>
+            <if test="searchType=='content'">
+               BOARD_COMMENT like CONCAT('%', #{searchKw}, '%')
+            </if>
+         </foreach>
+      </if>
+   </trim>
+      ORDER BY
+            BOARD_TOP DESC
+            ,BOARD_NO DESC
+      ) a
+      ,(SELECT @rownum :=0) b 
+      ) c
+       WHERE c.rownum BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+    </select>
+    
+    
+   <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
+        INSERT INTO 
+           BOARD
+              (
+              BOARD_TITLE
+              ,BOARD_COMMENT
+              ,CREATOR
+              ,CREATE_TIME
+              ,BOARD_TOP
+              )
+           VALUES
+              (
+              #{boardTitle}
+              ,#{boardComment} 
+              ,'관리자'
+              ,DATE_FORMAT(now(), '%Y-%m-%d')
+              ,#{boardTop}
+              )
+    </select> 
+    
+    <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
+       SELECT
+           BOARD_NO
+         ,BOARD_TITLE
+         ,BOARD_COMMENT
+         ,BOARD_TOP
+         ,CREATOR
+         ,CREATE_TIME
+      FROM
+         BOARD
+      WHERE BOARD_NO = #{boardNo}
+    </select>   
+    
+    <update id="boardUpdate" parameterType="com.spring.board.vo.BoardVo">
+       UPDATE
+          BOARD
+       SET
+          BOARD_TITLE = #{boardTitle}
+          ,BOARD_COMMENT = #{boardComment}
+          ,BOARD_TOP = #{boardTop}
+
+       WHERE
+          BOARD_NO  = #{boardNo}
+    </update>
+    
+    <delete id="boardDelete" parameterType="com.spring.board.vo.BoardVo">
+       DELETE
+       FROM     BOARD
+       WHERE    BOARD_NO  = #{boardNo}
+    </delete>
+    
+   <update id="boardHits">
+      UPDATE BOARD
+      SET HITS = IFNULL(HITS,0)+1
+      WHERE BOARD_NO = #{boardNo}
+   </update>
+
+    <select id="boardTotal" parameterType="com.spring.board.vo.PageVo" resultType="Integer">
+       SELECT
+          COUNT(*) AS TOTAL_CNT
+       FROM
+          BOARD
+          
+       <trim prefix="WHERE" prefixOverrides="AND|OR">
+   
+      <if test="searchAO=='and' and searchKw != null and searchKw !=''">
+         <foreach collection="searchKw" item="searchKw" open="(" close=")" separator="and">
+            <if test="searchType=='title'">
+               BOARD_TITLE like CONCAT('%', #{searchKw}, '%')
+            </if>
+            <if test="searchType=='content'">
+               BOARD_COMMENT like CONCAT('%', #{searchKw}, '%')
+            </if>
+         </foreach>   
+      </if>
+      
+      <if test="searchAO=='or' and searchKw != null and searchKw !=''">
+         <foreach collection="searchKw" item="searchKw" open="(" close=")" separator="or">
+            <if test="searchType=='title'">
+               BOARD_TITLE like CONCAT('%', #{searchKw}, '%')
+            </if>
+            <if test="searchType=='content'">
+               BOARD_COMMENT like CONCAT('%', #{searchKw}, '%')
+            </if>
+         </foreach>
+      </if>
+      
+      </trim>
+      
+    </select>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="schedule">
+    
+    <resultMap type="com.spring.board.vo.ScheduleVo" id="ScheduleMap">
+      <result property="scheduleNo"			column="SCHEDULE_NO"/>
+      <result property="scheduleCity"       column="SCHEDULE_CITY"/>
+      <result property="scheduleTitle"       column="SCHEDULE_TITLE"/>
+      <result property="startTime"         	column="START_TIME"/>
+      <result property="endTime"            column="END_TIME"/>
+      <result property="startDate"          column="START_DATE"/>
+      <result property="endDate"            column="END_DATE"/>
+      <result property="perLimit"           column="PER_LIMIT"/>
+      <result property="perApply"            column="PER_APPLY"/>
+   </resultMap>
+   
+   <resultMap type="com.spring.board.vo.RegisterVo" id="RegisterMap">
+      <result property="registerIdx"         column="REGISTER_IDX"/>
+      <result property="scheduleNo"         column="SCHEDULE_NO"/>
+      <result property="registerName"         column="REGISTER_NAME"/>
+      <result property="registerPhone"      column="REGISTER_PHONE"/>
+      <result property="registerEmail"      column="REGISTER_EMAIL"/>
+      <result property="registerCompany"      column="REGISTER_COMPANY"/>
+      <result property="registerDepartment"   column="REGISTER_DEPARTMENT"/>
+      <result property="registerRank"         column="REGISTER_RANK"/>
+      <result property="registerReason"      column="REGISTER_REASON"/>
+      <result property="registerQuestions"   column="REGISTER_QUESTIONS"/>
+   </resultMap>
+    <select id="getApplyList" parameterType="com.spring.board.vo.ScheduleVo" resultMap="RegisterMap">
+   		SELECT
+   			REGISTER_IDX
+   			,SCHEDULE_NO
+   			,REGISTER_NAME
+   			,REGISTER_PHONE
+   			,REGISTER_EMAIL
+   			,REGISTER_COMPANY
+   			,REGISTER_DEPARTMENT
+   			,REGISTER_RANK
+   			,REGISTER_REASON
+   			,REGISTER_QUESTIONS
+   		FROM
+   			REGISTER_INFO
+   		WHERE
+   			SCHEDULE_NO = #{scheduleNo}
+   		
+   </select>
+   <select id="CheckUserCnt" parameterType="com.spring.board.vo.RegisterVo" resultType="int">
+   		SELECT
+   			COUNT(*)
+   		FROM
+   			REGISTER_INFO
+   		WHERE	
+   			REGISTER_IDX=#{registerIdx}
+   		AND	
+   			REGISTER_NAME=#{registerName}
+   		AND	
+   			REGISTER_PHONE=#{registerPhone}
+   		
+   </select>
+   
+    <select id="getUserInfo" parameterType="com.spring.board.vo.RegisterVo" resultMap="RegisterMap">
+   		SELECT
+   			REGISTER_IDX
+   			,SCHEDULE_NO
+   			,REGISTER_NAME
+   			,REGISTER_PHONE
+   			,REGISTER_EMAIL
+   			,REGISTER_COMPANY
+   			,REGISTER_DEPARTMENT
+   			,REGISTER_RANK
+   			,REGISTER_REASON
+   			,REGISTER_QUESTIONS
+   		FROM
+   			REGISTER_INFO
+   		WHERE
+   			REGISTER_IDX = #{registerIdx}
+   		
+   </select>
+   <select id="selectScheduleList" parameterType="com.spring.board.vo.ScheduleVo" resultMap="ScheduleMap">
+   		SELECT
+   			SCHEDULE_NO
+   			,SCHEDULE_CITY
+   			,SCHEDULE_TITLE
+   			,START_TIME
+   			,END_TIME
+   			,START_DATE
+   			,END_DATE
+   			,PER_LIMIT
+   			,PER_APPLY
+   		FROM
+   			SCHEDULE
+   </select>
+   
+   <select id="optionScheduleList" parameterType="com.spring.board.vo.ScheduleVo" resultMap="ScheduleMap">
+   		SELECT
+   			SCHEDULE_NO
+   			,SCHEDULE_CITY
+   			,SCHEDULE_TITLE
+   			,START_TIME
+   			,END_TIME
+   			,START_DATE
+   			,END_DATE
+   			,PER_LIMIT
+   			,PER_APPLY
+   		FROM
+   			SCHEDULE
+   		WHERE
+   			SCHEDULE_TITLE LIKE CONCAT('%',#{scheduleTitle},'%')
+   		
+   </select>
+   
+   <select id="selectSchedule" parameterType="com.spring.board.vo.ScheduleVo" resultMap="ScheduleMap">
+    	SELECT
+        	SCHEDULE_NO
+   			,SCHEDULE_CITY
+   			,SCHEDULE_TITLE
+   			,START_TIME
+   			,END_TIME
+   			,START_DATE
+   			,END_DATE
+   			,PER_LIMIT
+   			,PER_APPLY
+		FROM
+			SCHEDULE
+    	WHERE 	SCHEDULE_NO = #{scheduleNo}
+    	
+    </select>	
+    
+   <insert id="scheduleInsert" parameterType="com.spring.board.vo.ScheduleVo">
+   		INSERT INTO
+   		SCHEDULE
+   		(SCHEDULE_NO,
+   		SCHEDULE_CITY,
+   		SCHEDULE_TITLE,
+   		START_DATE,
+   		END_DATE,
+   		START_TIME,
+   		END_TIME,
+   		PER_LIMIT,
+   		PER_APPLY
+   		)
+   		VALUES
+   		((SELECT IFNULL(MAX(SCHEDULE_NO)+1,1) 
+   			FROM SCHEDULE AS TMP)
+   		,#{scheduleCity}
+   		,#{scheduleTitle}
+   		,#{startDate}
+   		,#{endDate}
+   		,#{startTime}
+   		,#{endTime}
+   		,#{perLimit}
+   		,#{perApply}
+   		)
+   </insert>
+   <update id="updateApplyCnt" parameterType="com.spring.board.vo.ScheduleVo">
+   		UPDATE SCHEDULE
+    	SET
+    		PER_APPLY = (SELECT COUNT(*) FROM REGISTER_INFO WHERE SCHEDULE_NO=#{scheduleNo})
+       	WHERE SCHEDULE_NO = #{scheduleNo} 
+   </update>
+</mapper>

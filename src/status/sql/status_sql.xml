@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="status">
+    
+   <resultMap type="com.spring.board.vo.RegisterVo" id="statusMap">
+      <result property="registerIdx"         column="REGISTER_IDX"/>
+      <result property="scheduleNo"         column="SCHEDULE_NO"/>
+      <result property="registerName"         column="REGISTER_NAME"/>
+      <result property="registerPhone"      column="REGISTER_PHONE"/>
+      <result property="registerEmail"      column="REGISTER_EMAIL"/>
+      <result property="registerCompany"      column="REGISTER_COMPANY"/>
+      <result property="registerDepartment"   column="REGISTER_DEPARTMENT"/>
+      <result property="registerRank"         column="REGISTER_RANK"/>
+      <result property="registerReason"      column="REGISTER_REASON"/>
+      <result property="registerQuestions"   column="REGISTER_QUESTIONS"/>
+   </resultMap>
+   
+   <resultMap type="com.spring.board.vo.ScheduleVo" id="ScheduleMap">
+      <result property="scheduleNo"			column="SCHEDULE_NO"/>
+      <result property="scheduleCity"       column="SCHEDULE_CITY"/>
+      <result property="scheduleTitle"       column="SCHEDULE_TITLE"/>
+      <result property="startTime"         	column="START_TIME"/>
+      <result property="endTime"            column="END_TIME"/>
+      <result property="startDate"          column="START_DATE"/>
+      <result property="endDate"            column="END_DATE"/>
+      <result property="perLimit"           column="PER_LIMIT"/>
+      <result property="perApply"            column="PER_APPLY"/>
+   </resultMap>
+ 	
+ 	
+</mapper>
