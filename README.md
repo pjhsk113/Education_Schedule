@@ -3,9 +3,11 @@
 
 ## 개발환경
 - 언어
-  - Java, JavaScript, JQuery, Jsp, JSTL, Ajax
+  - Java, JavaScript, Jsp, JSTL, Ajax
 - 프레임워크
   - Spring, MyBatis
+- 라이브러리
+  - JQuery, Lombok, tiles
 - DB
   - MySQL
 - WAS
@@ -13,4 +15,6 @@
 - JDK
   - jdk1.8
   
-## 
+## 교육일정 캘린더
+- `src`-`com.spring.board.controller`-`ScheduleController.java `
+![.](img/edu_image1.jpg)
