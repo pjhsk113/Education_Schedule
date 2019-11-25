@@ -16,5 +16,15 @@
   - jdk1.8
   
 ## 교육일정 캘린더
-- `src`-`com.spring.board.controller`-`ScheduleController.java `
+- Controller
+    - `src`-`com.spring.board.controller`-`ScheduleController.java `
+- View
+    - `WebContent`-`WEB-INF`-`views`-`calendar`-`education_calendar.jsp`
+
 ![](img/edu_image1.JPG)
+
+## 교육 일정 만들기
+- View
+    - `WebContent`-`WEB-INF`-`views`-`calendar`-`add_Schedule.jsp`
+
+![](img/edu_image5.JPG)
