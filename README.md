@@ -17,4 +17,4 @@
   
 ## 교육일정 캘린더
 - `src`-`com.spring.board.controller`-`ScheduleController.java `
-![.](img/edu_image1.jpg)
+![](img/edu_image1.JPG)
