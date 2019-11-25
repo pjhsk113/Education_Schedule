@@ -48,7 +48,7 @@
         <nav>
           <h3>Education</h3>
           <ul>
-              <li><a href="../edboard/edBoardList.do">교육공지</a></li>
+              <li><a href="../../edboard/edBoardList.do">교육공지</a></li>
               <li><a href="#">교육자료</a></li>
               <li><a href="../calendar/edu_calendar.do">교육일정</a></li>
               <li><a href="#">교육신청</a></li>
