@@ -213,175 +213,178 @@ html,body {
 		    	alert("조회 실패");
 		    }
 		});
-		var values = null;
-		$j(document.body).delegate("input[type='checkbox'][name='checkBox']",'click',function(){
-			if($j(this).prop('checked')){
-				$j("input[type='checkbox'][name='checkBox']").prop('checked',false);
-				$j(this).prop('checked',true);
-				values = $j(this).val();
-			}
-		});
-		function popupOpen(){
-			 var $layerPopupObj = $j('#popup');
-			 var left = ( $j(window).scrollLeft() + ($j(window).width() - $layerPopupObj.width()) / 2 );
-			 var top = ( $j(window).scrollTop() + ($j(window).height() - $layerPopupObj.height()) / 2 );
-			 $layerPopupObj.css({'left':left,'top':top, 'position':'absolute'});
-			 $j('body').css('position','relative').append($layerPopupObj);
-		    if(document.all.popup.style.visibility=="hidden") {
-		        document.all.popup.style.visibility="visible";
-		        return false;
-		    }
+	});
+	var values = null;
+	$j(document.body).delegate("input[type='checkbox'][name='checkBox']",'click',function(){
+		if($j(this).prop('checked')){
+			$j("input[type='checkbox'][name='checkBox']").prop('checked',false);
+			$j(this).prop('checked',true);
+			values = $j(this).val();
 		}
-		function bgLayerOpen() {
-	        if(!$j('.bgLayer').length) {
-	            $j('<div class="bgLayer"></div>').appendTo($j('body'));
-	        }
-	        var object = $j(".bgLayer");
-	        var w = $j(document).width()+12;
-	        var h = $j(document).height();
-	        object.css({'width':w,'height':h}); 
-	        object.fadeIn(200);   //생성되는 시간 설정
+	});
+	function popupOpen(){
+		 var $layerPopupObj = $j('#popup');
+		 var left = ( $j(window).scrollLeft() + ($j(window).width() - $layerPopupObj.width()) / 2 );
+		 var top = ( $j(window).scrollTop() + ($j(window).height() - $layerPopupObj.height()) / 2 );
+		 $layerPopupObj.css({'left':left,'top':top, 'position':'absolute'});
+		 $j('body').css('position','relative').append($layerPopupObj);
+	    if(document.all.popup.style.visibility=="hidden") {
+	        document.all.popup.style.visibility="visible";
+	        return false;
 	    }
-
-	    function bgLayerClear(){
-	        var object = $j('.bgLayer');
-	   		if(object.length) {
-	        	object.fadeOut(200, function() {
-	        	object.remove();
-	    		});
-	    	}
-	   		document.all.popup.style.visibility="hidden";
-	   		return false;   
-	    }
-		$j(document.body).delegate("#modify",'click',function(){
-			if($j("input[type='checkbox'][name='checkBox']").is(":checked")==true){
-				$j.ajax({
-				    url : "/status/popup.do",
-				    dataType: "html",
-				    type: "POST",
-				    data : {registerIdx : values},
-				    success: function(data, textStatus, jqXHR)
-				    {
-				    	$j("#popup").html(data);
-				    	popupOpen();
-				    	bgLayerOpen();
-				    	
-				    },
-				    error: function (jqXHR, textStatus, errorThrown)
-				    {
-				    	alert("조회 실패");
-				    }
-				});
-			}
-			$j(document.body).delegate("#cancel",'click',function(){
-				bgLayerClear();
-			});	
-			$j(document.body).delegate("#confirm",'click',function(){
-				var idx = $j("#registerIdx").val();
-				var name = $j("#registerName").val();
-				var phone1 = $j("#registerPhone1").val();
-				var phone2 = $j("#registerPhone2").val();
-				var phone3 = $j("#registerPhone3").val();
-				var scheduleNo = $j("#scheduleNo").val();
-				var $frm = phone1+','+phone2+','+phone3;
-				var param = {registerIdx : idx, registerName : name, registerPhone: $frm};
-				$j.ajax({
-				    url : "/status/userCheck.do",
-				    dataType: "json",
-				    type: "POST",
-				    data : param,
-				    success: function(data, textStatus, jqXHR)
-				    {
-				    	if(data == 1){
-				    		if(confirm('수정페이지로 이동하시겠습니까?')){
-				    			location.href = "/apply/update_register.do?scheduleNo="+scheduleNo+"&registerIdx="+idx;	
-				    		}else{
-				    			return false;
-				    		}
-				    	}else{
-				    		alert('번호가 틀렸습니다.');
-				    		return false;
-				    	}
-				    },
-				    error: function (jqXHR, textStatus, errorThrown)
-				    {
-				    	alert("조회 실패");
-				    	
-				    }
-				});
-			});
-		});
+	}
 	
-		$j(document.body).delegate("#canceled",'click',function(){
-			if($j("input[type='checkbox'][name='checkBox']").is(":checked")==true){
-				$j.ajax({
-				    url : "/status/popup.do",
-				    dataType: "html",
-				    type: "POST",
-				    data : {registerIdx : values},
-				    success: function(data, textStatus, jqXHR)
-				    {
-				    	$j("#popup").html(data);
-				    	popupOpen();
-				    	bgLayerOpen();
-				    	
-				    },
-				    error: function (jqXHR, textStatus, errorThrown)
-				    {
-				    	alert("조회 실패");
-				    }
-				});
-			}
-			$j(document.body).delegate("#delete",'click',function(){
-				var idx = $j("#registerIdx").val();
-				var name = $j("#registerName").val();
-				var phone1 = $j("#registerPhone1").val();
-				var phone2 = $j("#registerPhone2").val();
-				var phone3 = $j("#registerPhone3").val();
-				var $frm = phone1+','+phone2+','+phone3;
-				var param = {registerIdx : idx, registerName : name, registerPhone: $frm};
-				$j.ajax({
-				    url : "/status/userCheck.do",
-				    dataType: "json",
-				    type: "POST",
-				    data : param,
-				    success: function(data, textStatus, jqXHR)
-				    {
-				    	if(data == 1){
-				    		if(confirm('삭제하신 일정은 복구가 불가능합니다. 삭제하시겠습니까?')){
-				    			$j.ajax({
-				    			    url : "/apply/applyDeleteOK.do?registerIdx="+idx,
-				    			    dataType: "json",
-				    			    type: "POST",
-				    			    data : param,
-				    			    success: function(data, textStatus, jqXHR)
-				    			    {
-				    			    	location.href="/status/status_info.do";
-				    			    },
-				    			    error: function (jqXHR, textStatus, errorThrown)
-				    			    {
-				    			    	alert("삭제 실패");
-				    			    }
-				    			});
-				    		}else{
-				    			return false;
-				    		}
-				    	}else{
-				    		alert('번호가 틀렸습니다.');
-				    		return false;
-				    	}
-				    },
-				    error: function (jqXHR, textStatus, errorThrown)
-				    {
-				    	alert("조회 실패");
-				    	
-				    }
-				});
+	function bgLayerOpen() {
+        if(!$j('.bgLayer').length) {
+            $j('<div class="bgLayer"></div>').appendTo($j('body'));
+        }
+        var object = $j(".bgLayer");
+        var w = $j(document).width()+12;
+        var h = $j(document).height();
+        object.css({'width':w,'height':h}); 
+        object.fadeIn(200);   //생성되는 시간 설정
+    }
+	
+	function bgLayerClear(){
+		var object = $j('.bgLayer');
+	  	if(object.length) {
+	    	object.fadeOut(200, function() {
+	       	object.remove();
+	   		});
+	   	}
+	  	document.all.popup.style.visibility="hidden";
+	  	return false;   
+	}
+	
+	$j(document.body).delegate("#modify",'click',function(){
+		if($j("input[type='checkbox'][name='checkBox']").is(":checked")==true){
+			$j.ajax({
+			    url : "/status/popup.do",
+			    dataType: "html",
+			    type: "POST",
+			    data : {registerIdx : values},
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	$j("#popup").html(data);
+			    	popupOpen();
+			    	bgLayerOpen();
+			    	
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("조회 실패");
+			    }
 			});
-		});
-			
+		}
 	});
 	
+	$j(document.body).delegate("#cancel",'click',function(){
+		bgLayerClear();
+	});	
+	
+	$j(document.body).delegate("#confirm",'click',function(){
+		var idx = $j("#registerIdx").val();
+		var name = $j("#registerName").val();
+		var phone1 = $j("#registerPhone1").val();
+		var phone2 = $j("#registerPhone2").val();
+		var phone3 = $j("#registerPhone3").val();
+		var scheduleNo = $j("#scheduleNo").val();
+		var $frm = phone1+','+phone2+','+phone3;
+		var param = {registerIdx : idx, registerName : name, registerPhone: $frm};
+		$j.ajax({
+		    url : "/status/userCheck.do",
+		    dataType: "json",
+		    type: "POST",
+		    data : param,
+		    success: function(data, textStatus, jqXHR)
+		    {
+		    	if(data == 1){
+		    		if(confirm('수정페이지로 이동하시겠습니까?')){
+		    			location.href = "/apply/update_register.do?scheduleNo="+scheduleNo+"&registerIdx="+idx;	
+		    		}else{
+		    			return false;
+		    		}
+		    	}else{
+		    		alert('번호가 틀렸습니다.');
+		    		return false;
+		    	}
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert("조회 실패");
+		    	
+		    }
+		});
+	});
+	
+	
+	$j(document.body).delegate("#canceled",'click',function(){
+		if($j("input[type='checkbox'][name='checkBox']").is(":checked")==true){
+			$j.ajax({
+			    url : "/status/popup.do",
+			    dataType: "html",
+			    type: "POST",
+			    data : {registerIdx : values},
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	$j("#popup").html(data);
+			    	popupOpen();
+			    	bgLayerOpen();
+			    	
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("조회 실패");
+			    }
+			});
+		}
+	});
+	$j(document.body).delegate("#delete",'click',function(){
+		var idx = $j("#registerIdx").val();
+		var name = $j("#registerName").val();
+		var phone1 = $j("#registerPhone1").val();
+		var phone2 = $j("#registerPhone2").val();
+		var phone3 = $j("#registerPhone3").val();
+		var $frm = phone1+','+phone2+','+phone3;
+		var param = {registerIdx : idx, registerName : name, registerPhone: $frm};
+		$j.ajax({
+		    url : "/status/userCheck.do",
+		    dataType: "json",
+		    type: "POST",
+		    data : param,
+		    success: function(data, textStatus, jqXHR)
+		    {
+		    	if(data == 1){
+		    		if(confirm('삭제하신 일정은 복구가 불가능합니다. 삭제하시겠습니까?')){
+		    			$j.ajax({
+		    			    url : "/apply/applyDeleteOK.do?registerIdx="+idx,
+		    			    dataType: "json",
+		    			    type: "POST",
+		    			    data : param,
+		    			    success: function(data, textStatus, jqXHR)
+		    			    {
+		    			    	location.href="/status/status_info.do";
+		    			    },
+		    			    error: function (jqXHR, textStatus, errorThrown)
+		    			    {
+		    			    	alert("삭제 실패");
+		    			    }
+		    			});
+		    		}else{
+		    			return false;
+		    		}
+		    	}else{
+		    		alert('번호가 틀렸습니다.');
+		    		return false;
+		    	}
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert("조회 실패");
+		    	
+		    }
+		});
+	});
 </script>
 </body>
 </html>

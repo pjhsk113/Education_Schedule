@@ -74,7 +74,6 @@ public class RegisterController {
 		int result=0;
 		
 		scheduleVo = scheduleService.selectSchedule(scheduleNo);
-//		int updateCnt = scheduleService.updateApplyCnt(scheduleNo);
 		userInfo = scheduleService.getUserInfo(registerIdx);
 		
 		model.addAttribute("userInfo",userInfo);

@@ -50,11 +50,6 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return scheduleDao.getApplyList(scheduleVo);
 	}
 
-//	@Override
-//	public RegisterVo getUserInfo(RegisterVo registerVo) throws Exception {
-//		// TODO Auto-generated method stub
-//		return scheduleDao.getUserInfo(registerVo);
-//	}
 	@Override
 	public RegisterVo getUserInfo(int registerIdx) throws Exception{
 		// TODO Auto-generated method stub
