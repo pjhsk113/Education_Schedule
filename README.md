@@ -28,3 +28,24 @@
     - `WebContent`-`WEB-INF`-`views`-`calendar`-`add_Schedule.jsp`
 
 ![](img/edu_image5.JPG)
+
+## 교육 신청
+- Controller
+    - `src`-`com.spring.board.controller`-`RegisterController.java `
+- View
+    - `WebContent`-`WEB-INF`-`views`-`apply`-`apply_register.jsp`
+    
+![](img/edu_image2.JPG)
+
+## 교육 신청 현황
+- Controller
+    - `src`-`com.spring.board.controller`-`StatusController.java `
+- View
+    - `WebContent`-`WEB-INF`-`views`-`status`-`status_info.jsp`
+    
+![](img/edu_image3.JPG)
+
+## 교육 신청자 정보수정/ 신청취소
+- 휴대폰 번호 확인을 통해 수정/취소 가능
+
+![](img/edu_image4.JPG)
